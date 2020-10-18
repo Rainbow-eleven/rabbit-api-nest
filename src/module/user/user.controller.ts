@@ -30,10 +30,14 @@ export class UserController {
     type: Number,
   })
   async findAll(@Query() { keyword, count, pageSize }) {
-    const res: User[] | User = await this.userService.find({ keyword, count: (count - 1) * pageSize, pageSize })
-    return {
-      data: res,
-      total: (await res).length
+    const data: User[] | User | responseMsg = await this.userService.find({ keyword, count, pageSize })
+    if (data instanceof Array) {
+      return {
+        data,
+        total: (await data).length
+      }
+    } else {
+      return data
     }
   }
   @Get("/:id")

@@ -17,21 +17,31 @@ interface Isearch {
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
-  async find(s?: Isearch, id?: number,): Promise<User[]> {
+  async find(s?: Isearch, id?: number,): Promise<User[] | responseMsg> {
     if (id) {
       return await this.userRepository.find({ where: { id } });
     } else {
-      if (s.count !== NaN && s.pageSize !== undefined) {
+      if (s.count === undefined && s.pageSize) {
+        return {
+          message: "pageSize 和 count 必须同时传递才可以执行哦",
+          statusCode: 500
+        }
+      } else if (s.pageSize === undefined && s.count) {
+        return {
+          message: "pageSize 和 count 必须同时传递才可以执行哦",
+          statusCode: 500
+        }
+      }
+      if (s.count !== undefined && s.pageSize !== undefined) {
         if (s.keyword) {
-          return await this.userRepository.find({ where: { userName: Like(`%${s.keyword}%`) } });
+          return createQueryBuilder(User, 'user').select(['*']).where({ userName: Like(`%${s.keyword}%`) },).offset((s.count - 1) * s.pageSize).limit(s.pageSize * 1)
+            .getRawMany(); // 获得原始结果
         } else {
-          console.log('分页')
-          return createQueryBuilder(User, 'user').select(['*']).limit(s.pageSize * 1).skip(s.count * 1)
+          return createQueryBuilder(User, 'user').select(['*']).offset((s.count - 1) * s.pageSize).limit(s.pageSize * 1)
             .getRawMany(); // 获得原始结果
         }
-        // return await this.userRepository.find({select:[]})
-      } else {
-        console.log('不分')
+      }
+      else {
         if (s.keyword) {
           return createQueryBuilder(User, 'user').select(['*']).where({ userName: Like(`%${s.keyword}%`) },)
             .getRawMany(); // 获得原始结果
@@ -39,17 +49,8 @@ export class UserService {
           return createQueryBuilder(User, 'user').select(['*'])
             .getRawMany(); // 获得原始结果
         }
+
       }
-    }
-  }
-  async searchKeyword(s: Isearch): Promise<responseMsg> {
-    const query = new RegExp(s.keyword, 'i');//模糊查询参数  i 是 不区分大小写
-    console.log(query);
-    const res = await this.userRepository.find({ where: { userName: Like(s.keyword) } });
-    return {
-      message: "搜索成功",
-      statusCode: 200,
-      data: res
     }
   }
   async createOne(user: UserDto): Promise<responseMsg> {
