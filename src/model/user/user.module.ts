@@ -1,4 +1,4 @@
-import { User } from './user.eneity';
+import { User } from './user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';

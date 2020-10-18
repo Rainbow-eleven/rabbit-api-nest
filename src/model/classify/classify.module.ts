@@ -1,4 +1,4 @@
-import { Classify } from './classify.eneity';
+import { Classify } from './classify.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassifyController } from './classify.controller';

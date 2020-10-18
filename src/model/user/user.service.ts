@@ -1,5 +1,5 @@
 import { UserDto } from './user.interface';
-import { User } from './user.eneity';
+import { User } from './user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createQueryBuilder, Like, Repository } from 'typeorm';
