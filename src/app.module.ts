@@ -1,9 +1,9 @@
-import { User } from './module/user/user.eneity';
+import { Classify } from './model/classify/classify.eneity';
+import { User } from './model/user/user.eneity';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from "@nestjs/typeorm"
-import { UserModule } from './module/user/user.module';
+import { UserModule } from './model/user/user.module';
+import { ClassifyModule } from './model/classify/classify.module';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "mysql",
@@ -13,9 +13,7 @@ import { UserModule } from './module/user/user.module';
     password: "123456",
     database: "rabbit",
     synchronize: true,
-    entities: [User],
-  }), UserModule],
-  controllers: [AppController],
-  providers: [AppService],
+    entities: [User, Classify],
+  }), UserModule, ClassifyModule]
 })
 export class AppModule { }

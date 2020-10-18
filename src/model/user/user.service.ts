@@ -3,12 +3,8 @@ import { User } from './user.eneity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createQueryBuilder, Like, Repository } from 'typeorm';
+import { responseMsg } from '../../service/interface'
 
-export interface responseMsg {
-  message: string;
-  statusCode: number;
-  data?: User[] | UserDto;
-}
 interface Isearch {
   keyword: string,
   count?: number,
@@ -17,9 +13,9 @@ interface Isearch {
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
-  async find(s?: Isearch, id?: number,): Promise<User[] | responseMsg> {
+  async find(s?: Isearch, id?: number,): Promise<User[] | responseMsg<User, UserDto> | User> {
     if (id) {
-      return await this.userRepository.find({ where: { id } });
+      return await this.userRepository.findOne({ where: { id } });
     } else {
       if (s.count === undefined && s.pageSize) {
         return {
@@ -53,12 +49,12 @@ export class UserService {
       }
     }
   }
-  async createOne(user: UserDto): Promise<responseMsg> {
+  async createOne(user: UserDto): Promise<responseMsg<User, UserDto>> {
     const { account } = user;
     const isUser = await this.userRepository.findOne({ where: { account } });
     if (isUser === undefined) {
-      const userEntity = await this.userRepository.create(user)
-      await this.userRepository.save(userEntity);
+      const userEneity = await this.userRepository.create(user)
+      await this.userRepository.save(userEneity);
       return {
         message: "注册成功",
         statusCode: 200,
@@ -70,13 +66,13 @@ export class UserService {
       }
     }
   }
-  async update(id: number, body: UserDto): Promise<responseMsg> {
+  async update(id: number, body: UserDto): Promise<responseMsg<User, UserDto>> {
     const { account } = body;
     const isUser = await this.userRepository.findOne({ where: { account } });
     if (isUser === undefined) {
       await this.userRepository.update(id, body);
       return {
-        message: "修改成功",
+        message: "更新成功",
         statusCode: 200
       }
     } else {
@@ -86,7 +82,7 @@ export class UserService {
       }
     }
   }
-  async deleteOne(id: number): Promise<responseMsg> {
+  async deleteOne(id: number): Promise<responseMsg<User, UserDto>> {
     await this.userRepository.delete(id)
     return {
       message: "删除成功",
