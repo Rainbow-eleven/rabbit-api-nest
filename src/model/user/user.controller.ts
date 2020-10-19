@@ -1,5 +1,5 @@
 import { responseMsg } from './../../service/interface';
-import { User } from './user.eneity';
+import { User } from './user.entity';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { UserDto } from './user.interface';

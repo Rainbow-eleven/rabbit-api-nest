@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ClassifyDto } from './classity.interface';
-import { Classify } from './classify.eneity';
+import { Classify } from './classify.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { responseMsg } from '../../service/interface'

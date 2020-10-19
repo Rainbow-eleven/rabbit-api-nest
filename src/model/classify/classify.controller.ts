@@ -1,6 +1,6 @@
 import { ClassifyService } from './classify.service';
 import { ClassifyDto } from './classity.interface';
-import { Classify } from './classify.eneity';
+import { Classify } from './classify.entity';
 import { responseMsg } from './../../service/interface';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';

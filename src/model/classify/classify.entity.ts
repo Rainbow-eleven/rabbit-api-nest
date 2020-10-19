@@ -7,7 +7,7 @@ export class Classify {
   @Column("varchar", { nullable: false, comment: "类型名称" })
   classifyName: string;
 
-  @Column("varchar", { nullable: true, comment: "图标" })
+  @Column("varchar", { nullable: true, comment: "图标", default: "https://tse4-mm.cn.bing.net/th/id/OIP.kNVeGWuDQ7wNp5BORJkhwQAAAA?w=173&h=180&c=7&o=5&pid=1.7" })
   icon: string
 
   @Column("varchar", { nullable: true, comment: "大图标" })
@@ -19,10 +19,10 @@ export class Classify {
   @Column("int", { nullable: false, default: 1, comment: "状态" })
   status: number
 
-  @Column("bigint", { comment: "创建人", nullable: true })
+  @Column("bigint", { comment: "创建人", nullable: true, default: null })
   createdUserId: number
 
-  @Column("bigint", { comment: "修改人", nullable: true })
+  @Column("bigint", { comment: "修改人", nullable: true, default: null })
   updatedUserId: number
 
   @CreateDateColumn({

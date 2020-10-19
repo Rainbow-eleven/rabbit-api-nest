@@ -1,20 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
-export class ClassifyDto {
+import { ApiProperty } from "@nestjs/swagger";
+
+export class BrandDto {
   @ApiProperty({
-    description: '类型名称'
+    description: '品牌名称'
   })
-  classifyName: string;
+  brandName: string;
 
   @ApiProperty({
-    description: '图标',
-    example: "https://tse4-mm.cn.bing.net/th/id/OIP.kNVeGWuDQ7wNp5BORJkhwQAAAA?w=173&h=180&c=7&o=5&pid=1.7"
+    description: '品牌logo',
+    example: "https://tse4-mm.cn.bing.net/th/id/OIP.xbMiTPgzbz32rV9jW8bEgwAAAA?w=180&h=180&c=7&o=5&pid=1.7"
   })
-  icon: string
-
-  @ApiProperty({
-    description: '大图标'
-  })
-  bigIcon: string
+  logo: string
 
   @ApiProperty({
     description: '描述'
