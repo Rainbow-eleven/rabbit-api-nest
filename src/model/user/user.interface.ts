@@ -5,7 +5,7 @@ export class UserDto {
   @ApiProperty({
     description: "账号",
     required: true,
-    example: "admin"
+    example: "15100404109"
   })
   account: string;
 

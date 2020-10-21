@@ -23,24 +23,46 @@ export class BrandClassifyRelationService {
     id?: number,
   ): Promise<responseMsg<BrandClassifyRelation, BrandClassifyRelationDto>> {
     if (id) {
-      let BrandClassifyRelationReposity = getRepository(BrandClassifyRelation);
-      const data = await BrandClassifyRelationReposity.find({
-        where: { classifyId: id },
-        relations: ['classifyId', 'brandId'],
-      });
-      // const data = await this.brandRepository.query(
-      //   `select * from brand_classify_relation`,
-      // );
-      return {
-        message: '查询成功',
-        statusCode: 200,
-        data,
-      };
+      const brand = await this.brandRepository.query(
+        `select a.* from  brand as a ,brand_classify_relation as b
+        where a.id=b.brandidid  and b.classifyidid=${id}`,
+      );
+      let classify = await this.brandRepository.query(
+        `select * from classify where id = ${id}`,
+      );
+      if (classify.length > 0) {
+        classify = { ...classify[0], brands: brand };
+        return {
+          message: '查询成功',
+          statusCode: 200,
+          data: classify,
+        };
+      } else {
+        return {
+          message: '查询成功',
+          statusCode: 200,
+          data: [],
+        };
+      }
     } else {
-      let BrandClassifyRelationReposity = getRepository(BrandClassifyRelation);
-      const data = await BrandClassifyRelationReposity.find({
-        relations: ['classifyId', 'brandId'],
-      });
+      // let BrandClassifyRelationReposity = getRepository(BrandClassifyRelation);
+      // const data = await BrandClassifyRelationReposity.find({
+      //   relations: ['classifyId', 'brandId'],
+      // });
+      let data = [];
+      let count = await this.brandRepository.query(`select * from classify`);
+      console.log(count.length);
+      for (var i = 1; i <= count.length; i++) {
+        const brand = await this.brandRepository.query(
+          `select a.* from  brand as a ,brand_classify_relation as b
+          where a.id=b.brandidid  and b.classifyidid=${i}`,
+        );
+        let classify = await this.brandRepository.query(
+          `select * from classify where id = ${i}`,
+        );
+        classify = { ...classify[0], brands: brand };
+        data.push(classify);
+      }
       return {
         message: '查询成功',
         statusCode: 200,

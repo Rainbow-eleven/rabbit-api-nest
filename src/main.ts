@@ -9,14 +9,15 @@ async function bootstrap() {
   // 静态资源配置
   // 配置静态资源目录
   app.useStaticAssets(join(__dirname, '../src/', 'public'), {
-    prefix: '/static/'
-  })
+    prefix: '/static/',
+  });
   // 允许跨域
   app.enableCors();
   const options = new DocumentBuilder()
     .setTitle('二手兔后台API接口文档')
     .setDescription('浊雨不语-Muddyrain')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);

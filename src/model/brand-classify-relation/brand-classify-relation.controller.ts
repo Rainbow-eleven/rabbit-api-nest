@@ -8,13 +8,15 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { responseMsg } from 'src/service/interface';
 import { BrandClassifyRelation } from './brand-classify-relation.entity';
 import { BrandClassifyRelationService } from './brand-classify-relation.service';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('BrandClassifyRelation')
+@Controller('bcr')
 @ApiTags('品牌类型关系')
 export class BrandClassifyRelationController {
   constructor(private service: BrandClassifyRelationService) {}
@@ -26,6 +28,8 @@ export class BrandClassifyRelationController {
     const data = await this.service.find();
     return data;
   }
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Get('/:id')
   @ApiParam({
     name: 'id',
@@ -37,6 +41,8 @@ export class BrandClassifyRelationController {
     return await this.service.find(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Post()
   async create(
     @Body() body: BrandClassifyRelationDto,
@@ -44,6 +50,8 @@ export class BrandClassifyRelationController {
     return await this.service.create(body);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Put('/:id')
   @ApiParam({
     name: 'id',
@@ -56,6 +64,8 @@ export class BrandClassifyRelationController {
     return this.service.update(id, body);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Delete('/:id')
   @ApiParam({
     name: 'id',

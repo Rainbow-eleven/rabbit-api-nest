@@ -3,9 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -52,6 +50,12 @@ export class BrandClassifyRelation {
   })
   updatedTime: Date;
 
-  @Column({ type: 'enum', enum: [0, 1], default: 0, comment: '是否删除' })
+  @Column({
+    type: 'enum',
+    enum: [0, 1],
+    default: 0,
+    nullable: false,
+    comment: '是否删除',
+  })
   isDelete: number;
 }

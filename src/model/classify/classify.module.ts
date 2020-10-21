@@ -1,3 +1,4 @@
+import { JwtStrategy } from '../login/jwt.strategy';
 import { Classify } from './classify.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,6 +8,6 @@ import { ClassifyService } from './classify.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Classify])],
   controllers: [ClassifyController],
-  providers: [ClassifyService]
+  providers: [ClassifyService, JwtStrategy],
 })
-export class ClassifyModule { }
+export class ClassifyModule {}

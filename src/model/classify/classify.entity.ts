@@ -16,7 +16,7 @@ export class Classify {
   classifyName: string;
 
   @Column('varchar', {
-    nullable: true,
+    nullable: false,
     comment: '图标',
     default:
       'https://tse4-mm.cn.bing.net/th/id/OIP.kNVeGWuDQ7wNp5BORJkhwQAAAA?w=173&h=180&c=7&o=5&pid=1.7',

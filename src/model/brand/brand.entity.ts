@@ -12,20 +12,21 @@ export class Brand {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column('varchar', { comment: '品牌名称' })
+  @Column('varchar', { comment: '品牌名称', nullable: false })
   brandName: string;
 
   @Column('varchar', {
     comment: '品牌logo',
     default:
       'https://tse4-mm.cn.bing.net/th/id/OIP.xbMiTPgzbz32rV9jW8bEgwAAAA?w=180&h=180&c=7&o=5&pid=1.7',
+    nullable: false,
   })
   logo: string;
 
-  @Column('varchar', { comment: '描述' })
+  @Column('varchar', { comment: '描述', nullable: true })
   description: string;
 
-  @Column('int', { comment: '状态', default: 1 })
+  @Column('int', { comment: '状态', default: 1, nullable: false })
   status: number;
 
   @Column('bigint', { comment: '创建人', nullable: true, default: null })

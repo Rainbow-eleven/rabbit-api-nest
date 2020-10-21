@@ -1,3 +1,4 @@
+import { JwtStrategy } from './../login/jwt.strategy';
 import { Module } from '@nestjs/common';
 import { BrandClassifyRelationService } from './brand-classify-relation.service';
 import { BrandClassifyRelationController } from './brand-classify-relation.controller';
@@ -6,7 +7,7 @@ import { BrandClassifyRelation } from './brand-classify-relation.entity';
 
 @Module({
   imports:[TypeOrmModule.forFeature([BrandClassifyRelation])],
-  providers: [BrandClassifyRelationService],
+  providers: [BrandClassifyRelationService,JwtStrategy],
   controllers: [BrandClassifyRelationController],
 })
 export class BrandClassifyRelationModule {}
