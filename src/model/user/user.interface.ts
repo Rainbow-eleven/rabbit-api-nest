@@ -1,18 +1,19 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDto {
   id?: number;
   @ApiProperty({
-    description: "账号",
+    description: '账号',
     required: true,
-    example: "qiu3291002845@gmail.com"
+    type: String,
+    example: 'qiu3291002845@gmail.com',
   })
   account: string;
 
   @ApiProperty({
-    description: "密码",
+    description: '密码',
     required: true,
-    example: "123456"
+    example: '123456',
   })
   password: string;
   userName?: string;

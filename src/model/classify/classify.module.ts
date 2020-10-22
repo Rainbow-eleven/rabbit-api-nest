@@ -1,4 +1,4 @@
-import { JwtStrategy } from '../login/jwt.strategy';
+import { JwtStrategy } from '../../service/jwt.strategy';
 import { Classify } from './classify.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

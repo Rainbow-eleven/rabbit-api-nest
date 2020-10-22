@@ -12,7 +12,7 @@ export class Users {
   })
   id: number;
 
-  @Column('varchar', { nullable: false })
+  @Column({ nullable: true, comment: '用户名', type: 'varchar', unique: true })
   account: string;
 
   @Column('varchar', { nullable: false })

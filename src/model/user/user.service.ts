@@ -5,12 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createQueryBuilder, Like, Repository } from 'typeorm';
 import { responseMsg } from '../../service/interface';
 import * as bcrypt from 'bcryptjs';
+import { Isearch } from 'src/service/search';
 
-interface Isearch {
-  keyword: string;
-  count?: number;
-  pageSize?: number;
-}
 @Injectable()
 export class UserService {
   constructor(

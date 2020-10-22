@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { BrandClassifyRelation } from '../brand-classify-relation/brand-classify-relation.entity';
+import { Model } from '../model/model.entity';
 @Entity()
 export class Classify {
   @PrimaryGeneratedColumn({ type: 'bigint' })
@@ -56,7 +58,12 @@ export class Classify {
   )
   BrandClassifyRelation: BrandClassifyRelation[];
 
+  @OneToMany(
+    type => Model,
+    e => e.classifyId,
+  )
+  model: Model[];
+
   @Column({ type: 'enum', enum: [0, 1], default: 0, comment: '是否删除' })
   isDelete: number;
-
 }

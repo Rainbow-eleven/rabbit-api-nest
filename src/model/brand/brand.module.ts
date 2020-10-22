@@ -1,4 +1,4 @@
-import { JwtStrategy } from './../login/jwt.strategy';
+import { JwtStrategy } from '../../service/jwt.strategy';
 import { Module } from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { BrandController } from './brand.controller';

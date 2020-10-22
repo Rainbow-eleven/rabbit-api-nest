@@ -12,6 +12,8 @@ import { BrandClassifyRelation } from './model/brand-classify-relation/brand-cla
 import { LoginModule } from './model/login/login.module';
 import { EmailModule } from './model/email/email.module';
 import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
+import { ModelModule } from './model/model/model.module';
+import { Model } from './model/model/model.entity';
 const emailConfig = {
   useFactory: () => ({
     transport: 'smtps://aimmeng@163.com:OWRZKAPNBPKZSTEX@smtp.163.com',
@@ -39,7 +41,7 @@ const emailConfig = {
       password: '123456',
       database: 'rabbit',
       synchronize: true,
-      entities: [Users, Classify, Brand, BrandClassifyRelation],
+      entities: [Users, Classify, Brand, BrandClassifyRelation, Model],
     }),
     LoginModule,
     EmailModule,
@@ -47,6 +49,7 @@ const emailConfig = {
     ClassifyModule,
     BrandModule,
     BrandClassifyRelationModule,
+    ModelModule,
   ],
 })
 export class AppModule {}
