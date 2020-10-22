@@ -1,3 +1,4 @@
+import { ApiBody, ApiProperty } from '@nestjs/swagger';
 import { responseMsg } from './../../service/interface';
 import { Users } from './user.entity';
 import { ApiParam, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -17,6 +18,21 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { AuthGuard } from '@nestjs/passport';
+class volidatePass {
+  @ApiProperty({
+    required: true,
+    description: 'id',
+    example: 1,
+  })
+  id: number;
+  @ApiProperty({
+    required: true,
+    example: '123456',
+    description: '密码',
+  })
+  pass: string;
+}
+
 @Controller('user')
 @ApiTags('用户')
 export class UserController {
@@ -109,5 +125,44 @@ export class UserController {
   async delete(@Param('id') id: number): Promise<responseMsg<Users, UserDto>> {
     const res = await this.userService.deleteOne(id);
     return res;
+  }
+
+  // 校验旧密码
+  @Post('volidateOldPass')
+  @ApiBody({
+    description: '校验旧密码',
+    type: volidatePass,
+  })
+  async volidateOldPass(@Body() body: volidatePass) {
+    let oldPass: any = body.pass;
+    const user = await this.userService.findUser(body.id);
+    // 解密 验证
+    let valid = bcrypt.compareSync(oldPass, user.password);
+    if (valid) {
+      return {
+        message: '与旧密码完全符合',
+        statusCode: 200,
+      };
+    } else {
+      return {
+        message: '与旧密码不匹配',
+        statusCode: 500,
+      };
+    }
+  }
+  // 更改密码
+  @Post('/updatePass')
+  @ApiBody({
+    description: '更改密码',
+    type: volidatePass,
+  })
+  async updatePass(@Body() body: volidatePass) {
+    const { pass } = body;
+    const bcryptPass = bcrypt.hashSync(pass, bcrypt.genSaltSync(10)).toString();
+    body = { ...body, pass: bcryptPass };
+    await this.userService.updatePass(body.id, body.pass);
+    return {
+      success: '修改成功',
+    };
   }
 }

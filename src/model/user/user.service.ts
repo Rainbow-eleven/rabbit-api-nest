@@ -113,4 +113,12 @@ export class UserService {
       statusCode: 200,
     };
   }
+
+  async updatePass(id, pass) {
+    await this.userRepository.update(id, { password: pass });
+  }
+
+  async findUser(id) {
+    return await this.userRepository.findOne({ where: { id } });
+  }
 }

@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 @Entity()
 export class Users {
@@ -39,7 +40,12 @@ export class Users {
   @CreateDateColumn({
     type: 'timestamp',
     comment: '创建时间',
-    nullable: false,
   })
-  time: Date;
+  createdTime: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    comment: '修改时间',
+  })
+  updatedTime: Date;
 }
