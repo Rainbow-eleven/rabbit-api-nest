@@ -26,7 +26,7 @@ export class LoginService {
     if (!valid) {
       return { code: 500, msg: '登录失败,请重新输入账号或密码', data: '' };
     } else {
-      return { 
+      return {
         msg: '登录成功',
         data: {
           user: data[0],

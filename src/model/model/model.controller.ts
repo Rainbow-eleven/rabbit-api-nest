@@ -76,7 +76,7 @@ export class ModelController {
     return this.modelService.create(body);
   }
 
-  @Put()
+  @Put('/:id')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiParam({
@@ -87,7 +87,7 @@ export class ModelController {
     return this.modelService.update(id, body);
   }
 
-  @Delete()
+  @Delete('/:id')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiParam({

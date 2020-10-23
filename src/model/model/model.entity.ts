@@ -1,3 +1,4 @@
+import { Malfunction } from './../malfunction/malfunction.entity';
 import { Classify } from './../classify/classify.entity';
 import { type } from 'os';
 import {
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -45,7 +47,7 @@ export class Model {
     nullable: false,
     default: 'https://czh1010.oss-cn-beijing.aliyuncs.com/OIP.jpg',
   })
-  faceImhg: string;
+  faceImg: string;
 
   @Column({ type: 'varchar', nullable: true, default: null })
   contentImg: [];
@@ -77,4 +79,10 @@ export class Model {
     comment: '修改时间',
   })
   updatedTime: Date;
+
+  @OneToMany(
+    type => Malfunction,
+    e => e.modelId,
+  )
+  malfunction: Model[];
 }
