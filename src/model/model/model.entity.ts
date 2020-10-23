@@ -13,6 +13,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Brand } from '../brand/brand.entity';
+import { Malfunction_options } from '../malo/malo.entity';
 
 @Entity()
 export class Model {
@@ -85,4 +86,10 @@ export class Model {
     e => e.modelId,
   )
   malfunction: Model[];
+
+  @OneToMany(
+    type => Malfunction_options,
+    e => e.modelId,
+  )
+  malfunction_option: Model;
 }

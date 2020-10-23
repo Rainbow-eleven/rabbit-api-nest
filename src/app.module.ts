@@ -16,6 +16,8 @@ import { ModelModule } from './model/model/model.module';
 import { Model } from './model/model/model.entity';
 import { MalfunctionModule } from './model/malfunction/malfunction.module';
 import { Malfunction } from './model/malfunction/malfunction.entity';
+import { MaloModule } from './model/malo/malo.module';
+import { Malfunction_options } from './model/malo/malo.entity';
 const emailConfig = {
   useFactory: () => ({
     transport: 'smtps://aimmeng@163.com:OWRZKAPNBPKZSTEX@smtp.163.com',
@@ -50,6 +52,7 @@ const emailConfig = {
         BrandClassifyRelation,
         Model,
         Malfunction,
+        Malfunction_options,
       ],
     }),
     LoginModule,
@@ -60,6 +63,7 @@ const emailConfig = {
     BrandClassifyRelationModule,
     ModelModule,
     MalfunctionModule,
+    MaloModule,
   ],
 })
 export class AppModule {}

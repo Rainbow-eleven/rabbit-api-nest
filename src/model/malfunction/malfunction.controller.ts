@@ -6,8 +6,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { MalfunctionDto } from './malfunction.interface';
 import { MalfunctionService } from './malfunction.service';
 
@@ -16,11 +18,15 @@ import { MalfunctionService } from './malfunction.service';
 export class MalfunctionController {
   constructor(private malfunction: MalfunctionService) {}
   @Get()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   async find() {
     return await this.malfunction.find();
   }
 
   @Get('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiParam({
     description: '请输入商品ID',
     name: 'id',
@@ -30,11 +36,15 @@ export class MalfunctionController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   async create(@Body() body: MalfunctionDto) {
     return await this.malfunction.create(body);
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiParam({
     description: '请输入商品ID',
     name: 'id',
@@ -44,6 +54,8 @@ export class MalfunctionController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiParam({
     description: '请输入商品ID',
     name: 'id',

@@ -43,7 +43,7 @@ export class MalfunctionService {
     body: MalfunctionDto,
   ): Promise<responseMsg<Malfunction, MalfunctionDto>> {
     const malFucntion = await this.malfunction.query(
-      `select * from malfunction where title = '${body.title}'`,
+      `select * from malfunction where title = '${body.title}' and modelIdId = ${body.modelId}`,
     );
     if (!malFucntion[0]) {
       const MalfunctionRepository = await this.malfunction.create(body);
