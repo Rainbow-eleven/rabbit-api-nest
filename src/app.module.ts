@@ -1,3 +1,4 @@
+import { JwtStrategy } from './service/jwt.strategy';
 import { join } from 'path';
 import { Classify } from './model/classify/classify.entity';
 import { Users } from './model/user/user.entity';
@@ -18,6 +19,9 @@ import { MalfunctionModule } from './model/malfunction/malfunction.module';
 import { Malfunction } from './model/malfunction/malfunction.entity';
 import { MaloModule } from './model/malo/malo.module';
 import { Malfunction_options } from './model/malo/malo.entity';
+import { ToolController } from './tool.controller';
+import { OSSModule } from '@nest-public/nest-oss';
+
 const emailConfig = {
   useFactory: () => ({
     transport: 'smtps://aimmeng@163.com:OWRZKAPNBPKZSTEX@smtp.163.com',
@@ -34,8 +38,22 @@ const emailConfig = {
     options: {},
   }),
 };
+const ossConfig = {
+  client: {
+    endpoint: 'oss-cn-beijing.aliyuncs.com', // endpoint域名
+    accessKeyId: 'LTAI4G79gBgCCdgan6uVZjSY', // 账号
+    accessKeySecret: 'f2VHOxDAQwHE0ajH9syiKAnO3e1pYn', // 密码
+    bucket: 'czh1010', // 存储桶
+    internal: false, // 是否使用阿里云内部网访问
+    secure: true, // 使用 HTTPS
+    cname: false, // 自定义endpoint
+    timeout: '90s',
+  },
+  domain: '', // 自定义域名})],
+};
 @Module({
   imports: [
+    OSSModule.forRoot(ossConfig),
     MailerModule.forRootAsync(emailConfig),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -65,5 +83,7 @@ const emailConfig = {
     MalfunctionModule,
     MaloModule,
   ],
+  controllers: [ToolController],
+  providers: [JwtStrategy],
 })
 export class AppModule {}
