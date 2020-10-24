@@ -1,3 +1,4 @@
+import { Evaluate } from './../evaluate/evaluate.entity';
 import { Malfunction } from './../malfunction/malfunction.entity';
 import { Classify } from './../classify/classify.entity';
 import { type } from 'os';
@@ -85,11 +86,17 @@ export class Model {
     type => Malfunction,
     e => e.modelId,
   )
-  malfunction: Model[];
+  malfunction: Model;
 
   @OneToMany(
     type => Malfunction_options,
     e => e.modelId,
   )
   malfunction_option: Model;
+
+  @OneToMany(
+    type => Evaluate,
+    e => e.modelId,
+  )
+  evaluate: Model;
 }

@@ -1,3 +1,4 @@
+import { Evaluate } from './model/evaluate/evaluate.entity';
 import { JwtStrategy } from './service/jwt.strategy';
 import { join } from 'path';
 import { Classify } from './model/classify/classify.entity';
@@ -21,6 +22,7 @@ import { MaloModule } from './model/malo/malo.module';
 import { Malfunction_options } from './model/malo/malo.entity';
 import { ToolController } from './tool.controller';
 import { OSSModule } from '@nest-public/nest-oss';
+import { EvaluateModule } from './model/evaluate/evaluate.module';
 
 const emailConfig = {
   useFactory: () => ({
@@ -71,6 +73,7 @@ const ossConfig = {
         Model,
         Malfunction,
         Malfunction_options,
+        Evaluate,
       ],
     }),
     LoginModule,
@@ -82,6 +85,7 @@ const ossConfig = {
     ModelModule,
     MalfunctionModule,
     MaloModule,
+    EvaluateModule
   ],
   controllers: [ToolController],
   providers: [JwtStrategy],
