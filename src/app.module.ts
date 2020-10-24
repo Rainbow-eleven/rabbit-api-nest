@@ -1,3 +1,4 @@
+import { Appointment } from './model/appointment/appointment.entity';
 import { Evaluate } from './model/evaluate/evaluate.entity';
 import { JwtStrategy } from './service/jwt.strategy';
 import { join } from 'path';
@@ -23,6 +24,9 @@ import { Malfunction_options } from './model/malo/malo.entity';
 import { ToolController } from './tool.controller';
 import { OSSModule } from '@nest-public/nest-oss';
 import { EvaluateModule } from './model/evaluate/evaluate.module';
+import { EvaluateDetailModule } from './model/evaluate-detail/evaluate-detail.module';
+import { EvaluateDetail } from './model/evaluate-detail/evaluate-detail.entity';
+import { AppointmentModule } from './model/appointment/appointment.module';
 
 const emailConfig = {
   useFactory: () => ({
@@ -74,6 +78,8 @@ const ossConfig = {
         Malfunction,
         Malfunction_options,
         Evaluate,
+        EvaluateDetail,
+        Appointment
       ],
     }),
     LoginModule,
@@ -85,7 +91,8 @@ const ossConfig = {
     ModelModule,
     MalfunctionModule,
     MaloModule,
-    EvaluateModule
+    EvaluateModule,
+    AppointmentModule,
   ],
   controllers: [ToolController],
   providers: [JwtStrategy],

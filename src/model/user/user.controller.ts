@@ -34,6 +34,8 @@ class volidatePass {
 }
 
 @Controller('user')
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
 @ApiTags('用户')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -76,8 +78,6 @@ export class UserController {
     }
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Get('/:id')
   @ApiParam({
     name: 'id',
@@ -87,8 +87,6 @@ export class UserController {
     return this.userService.find(null, id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Post()
   async create(@Body() user: UserDto): Promise<responseMsg<Users, UserDto>> {
     const { password } = user;
@@ -100,8 +98,6 @@ export class UserController {
     return res;
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Put('/:id')
   @ApiParam({
     name: 'id',
@@ -115,8 +111,6 @@ export class UserController {
     return res;
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Delete('/:id')
   @ApiParam({
     name: 'id',
@@ -129,8 +123,6 @@ export class UserController {
 
   // 校验旧密码
   @Post('volidateOldPass')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @ApiBody({
     description: '校验旧密码',
     type: volidatePass,
@@ -154,8 +146,6 @@ export class UserController {
   }
   // 更改密码
   @Post('/updatePass')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @ApiBody({
     description: '更改密码',
     type: volidatePass,

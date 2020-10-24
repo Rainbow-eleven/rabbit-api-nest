@@ -1,3 +1,4 @@
+import { EvaluateDetail } from './../evaluate-detail/evaluate-detail.entity';
 import { Malfunction_options } from './../malo/malo.entity';
 import { Model } from './../model/model.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -20,6 +21,12 @@ export class Malfunction {
   )
   malfunction_option: Malfunction_options;
 
+  @OneToMany(
+    type => EvaluateDetail,
+    malo => malo.malfId,
+  )
+  EvaluateDetail: EvaluateDetail;
+
   @Column({ type: 'varchar', nullable: true })
   title: string;
 
@@ -37,4 +44,6 @@ export class Malfunction {
 
   @Column({ type: 'decimal', nullable: true, default: 5 })
   maintainTopPrice: number;
+
+
 }

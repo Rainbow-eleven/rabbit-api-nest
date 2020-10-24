@@ -1,3 +1,4 @@
+import { EvaluateDetail } from './../evaluate-detail/evaluate-detail.entity';
 import { Evaluate } from './../evaluate/evaluate.entity';
 import { Malfunction } from './../malfunction/malfunction.entity';
 import { Classify } from './../classify/classify.entity';

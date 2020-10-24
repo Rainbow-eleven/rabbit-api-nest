@@ -1,4 +1,4 @@
-import { EvaluateDto } from './entity.interface';
+import { AppointmentService } from './appointment.service';
 import {
   Body,
   Controller,
@@ -9,16 +9,16 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { EvaluateService } from './evaluate.service';
+import { AppointmentDto } from './appointment.interface';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('evaluate')
-@ApiTags('评估信息')
+@Controller('appointment')
 @UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth()
-export class EvaluateController {
-  constructor(private service: EvaluateService) {}
+@ApiTags('预约维修信息表')
+export class AppointmentController {
+  constructor(private service: AppointmentService) {}
   @Get()
   findAll() {
     return this.service.find();
@@ -26,7 +26,7 @@ export class EvaluateController {
 
   @Get('/:id')
   @ApiParam({
-    description: '请输入商品模型ID',
+    description: '请输入用户ID',
     name: 'id',
   })
   findOne(@Param('id') id: number) {
@@ -34,22 +34,22 @@ export class EvaluateController {
   }
 
   @Post()
-  create(@Body() body: EvaluateDto) {
+  create(@Body() body: AppointmentDto) {
     return this.service.create(body);
   }
 
   @Put('/:id')
   @ApiParam({
-    description: '请输入评估信息ID',
+    description: '请输入预约ID',
     name: 'id',
   })
-  update(@Param('id') id: number, @Body() body: EvaluateDto) {
+  update(@Param('id') id: number, @Body() body: AppointmentDto) {
     return this.service.update(id, body);
   }
 
   @Delete('/:id')
   @ApiParam({
-    description: '请输入评估信息ID',
+    description: '请输入预约ID',
     name: 'id',
   })
   delete(@Param('id') id: number) {

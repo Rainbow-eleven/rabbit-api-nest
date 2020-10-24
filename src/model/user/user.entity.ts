@@ -1,7 +1,9 @@
+import { Appointment } from './../appointment/appointment.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -48,4 +50,10 @@ export class Users {
     comment: '修改时间',
   })
   updatedTime: Date;
+
+  @OneToMany(
+    type => Appointment,
+    appo => appo.userId,
+  )
+  Appointment: Appointment;
 }

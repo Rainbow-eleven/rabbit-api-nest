@@ -1,10 +1,13 @@
+import { type } from 'os';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { EvaluateDetail } from '../evaluate-detail/evaluate-detail.entity';
 import { Malfunction } from '../malfunction/malfunction.entity';
 import { Model } from '../model/model.entity';
 
@@ -56,4 +59,10 @@ export class Malfunction_options {
 
   @Column({ type: 'int', nullable: true, default: 0 })
   ratio: number;
+
+  @OneToMany(
+    type => EvaluateDetail,
+    e => e.optionId,
+  )
+  EvaluateDetail: EvaluateDetail;
 }

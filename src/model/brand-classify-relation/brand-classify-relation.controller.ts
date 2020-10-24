@@ -28,8 +28,7 @@ export class BrandClassifyRelationController {
     const data = await this.service.find();
     return data;
   }
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  
   @Get('/:id')
   @ApiParam({
     name: 'id',

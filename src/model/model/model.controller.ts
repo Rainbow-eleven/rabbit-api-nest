@@ -59,8 +59,6 @@ export class ModelController {
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @ApiParam({
     description: '请输入品牌id',
     name: 'id',

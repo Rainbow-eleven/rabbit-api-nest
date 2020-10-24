@@ -25,8 +25,6 @@ export class BrandController {
     return data;
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Get('/:id')
   @ApiParam({
     name: 'id',

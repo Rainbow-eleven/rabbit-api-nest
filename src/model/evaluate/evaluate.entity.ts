@@ -1,4 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { EvaluateDetail } from './../evaluate-detail/evaluate-detail.entity';
+import { type } from 'os';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Model } from '../model/model.entity';
 
 @Entity()
@@ -11,6 +19,12 @@ export class Evaluate {
     model => model.evaluate,
   )
   modelId: Model;
+
+  @OneToOne(
+    type => EvaluateDetail,
+    e => e.evaluateId,
+  )
+  EvaluateDetail: EvaluateDetail;
 
   @Column({ type: 'decimal', nullable: true, default: 500 })
   subscription: number;
