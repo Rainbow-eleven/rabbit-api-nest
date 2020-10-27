@@ -22,14 +22,19 @@ export class LoginService {
     const data: UserDto[] = await this.userRepository.query(
       `select * from users where account = '${user.account}'`,
     );
+    console.log(data[0]);
     if (data[0]) {
       let valid = bcrypt.compareSync(user.password, data[0].password);
       if (!valid) {
-        return { statusCode: 500, message: '登录失败,请重新输入账号或密码', data: '' };
+        return {
+          statusCode: 500,
+          message: '登录失败,请重新输入账号或密码',
+          data: '',
+        };
       } else {
         return {
           message: '登录成功',
-          statusCode:200,
+          statusCode: 200,
           data: {
             user: data[0],
             //得到token
@@ -38,7 +43,11 @@ export class LoginService {
         };
       }
     } else {
-      return { statusCode: 500, message: '登录失败,请重新输入账号或密码', data: '' };
+      return {
+        statusCode: 500,
+        message: '登录失败,请重新输入账号或密码',
+        data: '',
+      };
     }
   }
 }

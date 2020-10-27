@@ -107,6 +107,11 @@ export class UserController {
     @Param('id') id: number,
     @Body() user: UserDto,
   ): Promise<responseMsg<Users, UserDto>> {
+    const { password } = user;
+    const bcryptPass = bcrypt
+      .hashSync(password, bcrypt.genSaltSync(10))
+      .toString();
+    user = { ...user, password: bcryptPass };
     const res = await this.userService.update(id, user);
     return res;
   }

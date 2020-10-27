@@ -87,23 +87,47 @@ export class UserService {
     body: UserDto,
   ): Promise<responseMsg<Users, UserDto>> {
     const { account } = body;
-    const isUsers = await this.userRepository.findOne({ where: { account } });
-    if (isUsers === undefined) {
+    const isUsers = await this.userRepository.query(`
+      Select * from users where account = '${account}'
+    `);
+    if (isUsers[0]) {
+      console.log(id);
+      console.log(isUsers[0].id);
+      if (id == isUsers[0].id) {
+        await this.userRepository.update(id, body);
+        return {
+          message: '更新成功',
+          statusCode: 200,
+        };
+      } else {
+        return {
+          message: '该账户已经被注册',
+          statusCode: 500,
+        };
+      }
+    } else {
       await this.userRepository.update(id, body);
       return {
         message: '更新成功',
         statusCode: 200,
       };
-    } else {
-      return {
-        message: '该账户已经被注册',
-        statusCode: 500,
-      };
     }
+    // if (isUsers === undefined) {
+    //   await this.userRepository.update(id, body);
+    //   return {
+    //     message: '更新成功',
+    //     statusCode: 200,
+    //   };
+    // } else {
+    //   return {
+    //     message: '该账户已经被注册',
+    //     statusCode: 500,
+    //   };
+    // }
   }
 
   async deleteOne(id: number): Promise<responseMsg<Users, UserDto>> {
-    await this.userRepository.delete(id);
+    await this.userRepository.delete({ id });
     return {
       message: '删除成功',
       statusCode: 200,
