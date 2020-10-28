@@ -34,7 +34,7 @@ export class UserService {
         if (s.keyword) {
           return createQueryBuilder(Users, 'user')
             .select(['*'])
-            .where({ userName: Like(`%${s.keyword}%`) })
+            .where({ username: Like(`%${s.keyword}%`) })
             .offset((s.count - 1) * s.pageSize)
             .limit(s.pageSize * 1)
             .getRawMany(); // 获得原始结果
@@ -49,7 +49,7 @@ export class UserService {
         if (s.keyword) {
           return createQueryBuilder(Users, 'user')
             .select(['*'])
-            .where({ userName: Like(`%${s.keyword}%`) })
+            .where({ username: Like(`%${s.keyword}%`) })
             .getRawMany(); // 获得原始结果
         } else {
           return createQueryBuilder(Users, 'user')
@@ -91,8 +91,6 @@ export class UserService {
       Select * from users where account = '${account}'
     `);
     if (isUsers[0]) {
-      console.log(id);
-      console.log(isUsers[0].id);
       if (id == isUsers[0].id) {
         await this.userRepository.update(id, body);
         return {
@@ -140,5 +138,8 @@ export class UserService {
 
   async findUser(id) {
     return await this.userRepository.findOne({ where: { id } });
+  }
+  async findAccount (account:string){
+    return await this.userRepository.findOne({ where: { account } });
   }
 }

@@ -22,7 +22,6 @@ export class LoginService {
     const data: UserDto[] = await this.userRepository.query(
       `select * from users where account = '${user.account}'`,
     );
-    console.log(data[0]);
     if (data[0]) {
       let valid = bcrypt.compareSync(user.password, data[0].password);
       if (!valid) {

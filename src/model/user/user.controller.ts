@@ -107,11 +107,11 @@ export class UserController {
     @Param('id') id: number,
     @Body() user: UserDto,
   ): Promise<responseMsg<Users, UserDto>> {
-    const { password } = user;
-    const bcryptPass = bcrypt
-      .hashSync(password, bcrypt.genSaltSync(10))
-      .toString();
-    user = { ...user, password: bcryptPass };
+    // const { password } = user;
+    // const bcryptPass = bcrypt
+    //   .hashSync(password, bcrypt.genSaltSync(10))
+    //   .toString();
+    // user = { ...user, password: bcryptPass };
     const res = await this.userService.update(id, user);
     return res;
   }
@@ -163,5 +163,26 @@ export class UserController {
     return {
       success: '修改成功',
     };
+  }
+
+  @Get('/user/account/:account')
+  @ApiParam({
+    name: 'account',
+    description: '请输入账号',
+  })
+  async findAccount(@Param('account') account: string) {
+    const user = await this.userService.findAccount(account);
+    if (user) {
+      return {
+        statusCode: 200,
+        data: user,
+        message: '查询成功',
+      };
+    } else {
+      return {
+        statusCode: 500,
+        message: '没有此用户',
+      };
+    }
   }
 }
