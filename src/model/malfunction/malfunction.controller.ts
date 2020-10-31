@@ -9,11 +9,22 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { AuthResponse, ErrorResponse } from 'src/service/interface';
 import { MalfunctionDto } from './malfunction.interface';
 import { MalfunctionService } from './malfunction.service';
 
 @Controller('malfunction')
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiResponse({
+  description: '请求失败',
+  status: 500,
+  type: ErrorResponse,
+})
 @ApiTags('故障表')
 export class MalfunctionController {
   constructor(private malfunction: MalfunctionService) {}

@@ -10,12 +10,23 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { EvaluateService } from './evaluate.service';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthResponse, ErrorResponse } from 'src/service/interface';
 
 @Controller('evaluate')
 @ApiTags('评估信息')
 @UseGuards(AuthGuard('jwt'))
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiResponse({
+  description: '请求失败',
+  status: 500,
+  type: ErrorResponse,
+})
 @ApiBearerAuth()
 export class EvaluateController {
   constructor(private service: EvaluateService) {}

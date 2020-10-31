@@ -94,16 +94,26 @@ export class ModelService {
 
   async update(id: number, body: ModelDto) {
     const { modelName } = body;
-    const isClassify = await this.model.findOne({ where: { modelName } });
-    if (isClassify) {
-      return {
-        message: '该商品名称已经被使用',
-        statusCode: 500,
-      };
+    const isUsers = await this.model.query(`
+    Select * from model where modelName = '${modelName}'
+  `);
+    if (isUsers[0]) {
+      if (id == isUsers[0].id) {
+        await this.model.update(id, body);
+        return {
+          message: '更新成功',
+          statusCode: 200,
+        };
+      } else {
+        return {
+          message: '该账户已经被注册',
+          statusCode: 500,
+        };
+      }
     } else {
       await this.model.update(id, body);
       return {
-        message: '修改成功',
+        message: '更新成功',
         statusCode: 200,
       };
     }

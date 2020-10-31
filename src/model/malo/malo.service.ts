@@ -86,19 +86,27 @@ export class MaloService {
     id: number,
     body: MaloDto,
   ): Promise<responseMsg<Malfunction_options, MaloDto>> {
-    const malFucntion = await this.malo.query(
-      `select * from malfunction_options where title = '${body.optionName}'`,
-    );
-    if (!malFucntion[0]) {
+    const isUsers = await this.malo.query(`
+    Select * from malfunction_options where optionName = '${body.optionName}'
+  `);
+    if (isUsers[0]) {
+      if (id == isUsers[0].id) {
+        await this.malo.update(id, body);
+        return {
+          message: '更新成功',
+          statusCode: 200,
+        };
+      } else {
+        return {
+          message: '该账户已经被注册',
+          statusCode: 500,
+        };
+      }
+    } else {
       await this.malo.update(id, body);
       return {
         message: '更新成功',
         statusCode: 200,
-      };
-    } else {
-      return {
-        message: '故障选项已存在',
-        statusCode: 500,
       };
     }
   }

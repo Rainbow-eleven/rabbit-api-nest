@@ -11,12 +11,22 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ModelDto } from './model.interface';
-import { ApiTags, ApiQuery, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiQuery, ApiParam, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { Model } from './model.entity';
-import { responseMsg } from 'src/service/interface';
+import { AuthResponse, ErrorResponse, responseMsg } from 'src/service/interface';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('model')
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiResponse({
+  description: '请求失败',
+  status: 500,
+  type: ErrorResponse,
+})
 @ApiTags('商品模型')
 export class ModelController {
   constructor(private modelService: ModelService) {}

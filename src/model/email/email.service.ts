@@ -13,7 +13,7 @@ export class EmailService {
     this.mailerService.sendMail({
       to: email,
       from: 'aimmeng@163.com',
-      subject: '———— 彩虹计划 RainBow Project',
+      subject: '—— 彩虹计划 RainBow Project',
       template: 'email',
       context: {
         code,

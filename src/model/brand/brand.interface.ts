@@ -1,43 +1,72 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class BrandDto {
   @ApiProperty({
-    description: '品牌名称'
+    description: '品牌名称',
   })
   brandName: string;
 
   @ApiProperty({
     description: '品牌logo',
-    example: "https://tse4-mm.cn.bing.net/th/id/OIP.xbMiTPgzbz32rV9jW8bEgwAAAA?w=180&h=180&c=7&o=5&pid=1.7"
+    example:
+      'https://tse4-mm.cn.bing.net/th/id/OIP.xbMiTPgzbz32rV9jW8bEgwAAAA?w=180&h=180&c=7&o=5&pid=1.7',
   })
-  logo: string
+  logo: string;
 
   @ApiProperty({
-    description: '描述'
+    description: '描述',
   })
-  description: string
+  description: string;
 
   @ApiProperty({
     description: '状态',
-    example: 1
+    example: 1,
   })
-  status?: number
+  status?: number;
 
   @ApiProperty({
     description: '创建人',
-    example: null
+    example: null,
   })
-  createdUserId?: number
+  createdUserId?: number;
 
   @ApiProperty({
     description: '修改人',
-    example: null
+    example: null,
   })
-  updatedUserId?: number
+  updatedUserId?: number;
 
   @ApiProperty({
     description: '是否删除',
-    example: 0
+    example: 0,
   })
-  isDelete?: number
+  isDelete?: number;
+}
+export class ResponseAllBrands {
+  @ApiProperty({
+    type: [BrandDto],
+  })
+  data: Array<BrandDto>;
+  @ApiProperty({
+    example: 200,
+  })
+  statusCode: number;
+  @ApiProperty({
+    example: '查询成功',
+  })
+  message: string;
+}
+export class ResponseBrand {
+  @ApiProperty({
+    type: BrandDto,
+  })
+  data: BrandDto;
+  @ApiProperty({
+    example: 200,
+  })
+  statusCode: number;
+  @ApiProperty({
+    example: '查询成功',
+  })
+  message: string;
 }

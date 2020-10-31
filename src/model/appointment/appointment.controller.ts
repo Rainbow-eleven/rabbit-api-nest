@@ -10,13 +10,24 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AppointmentDto } from './appointment.interface';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthResponse, ErrorResponse } from 'src/service/interface';
 
 @Controller('appointment')
 @UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth()
 @ApiTags('预约维修信息表')
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiResponse({
+  description: '请求失败',
+  status: 500,
+  type: ErrorResponse,
+})
 export class AppointmentController {
   constructor(private service: AppointmentService) {}
   @Get()

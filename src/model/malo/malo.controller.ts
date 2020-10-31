@@ -11,10 +11,21 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiParam, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiParam, ApiQuery, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthResponse, ErrorResponse } from 'src/service/interface';
 
 @Controller('malo')
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiResponse({
+  description: '请求失败',
+  status: 500,
+  type: ErrorResponse,
+})
 @ApiTags('故障选项字典表')
 export class MaloController {
   constructor(private maloService: MaloService) {}

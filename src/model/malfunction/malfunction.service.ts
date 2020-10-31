@@ -64,19 +64,27 @@ export class MalfunctionService {
     id: number,
     body: MalfunctionDto,
   ): Promise<responseMsg<Malfunction, MalfunctionDto>> {
-    const malFucntion = await this.malfunction.query(
-      `select * from malfunction where title = '${body.title}'`,
-    );
-    if (!malFucntion[0]) {
+    const isUsers = await this.malfunction.query(`
+      Select * from malfunction where title = '${body.title}'
+    `);
+    if (isUsers[0]) {
+      if (id == isUsers[0].id) {
+        await this.malfunction.update(id, body);
+        return {
+          message: '更新成功',
+          statusCode: 200,
+        };
+      } else {
+        return {
+          message: '该账户已经被注册',
+          statusCode: 500,
+        };
+      }
+    } else {
       await this.malfunction.update(id, body);
       return {
         message: '更新成功',
         statusCode: 200,
-      };
-    } else {
-      return {
-        message: '故障名称已存在',
-        statusCode: 500,
       };
     }
   }

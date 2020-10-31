@@ -10,13 +10,23 @@ import {
   Body,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { responseMsg } from 'src/service/interface';
+import { ApiBearerAuth, ApiParam, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { AuthResponse, ErrorResponse, responseMsg } from 'src/service/interface';
 import { BrandClassifyRelation } from './brand-classify-relation.entity';
 import { BrandClassifyRelationService } from './brand-classify-relation.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('bcr')
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiResponse({
+  description: '请求失败',
+  status: 500,
+  type: ErrorResponse,
+})
 @ApiTags('品牌类型关系')
 export class BrandClassifyRelationController {
   constructor(private service: BrandClassifyRelationService) {}

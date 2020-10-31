@@ -1,9 +1,26 @@
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
-import { responseMsg } from './../../service/interface';
+import {
+  ApiBadGatewayResponse,
+  ApiBody,
+  ApiOkResponse,
+  ApiProperty,
+  ApiResponse,
+} from '@nestjs/swagger';
+import {
+  AuthResponse,
+  ErrorResponse,
+  responseMsg,
+  SuccessResponse,
+} from './../../service/interface';
 import { Users } from './user.entity';
 import { ApiParam, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { UserDto } from './user.interface';
+import {
+  UserDto,
+  ResponseAllData,
+  UserErrorResponse,
+  UserSuccessResponse,
+  ResponseData,
+} from './user.interface';
 import { UserService } from './user.service';
 import {
   Body,
@@ -14,6 +31,7 @@ import {
   Post,
   Put,
   Query,
+  Response,
   UseGuards,
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
@@ -34,13 +52,23 @@ class volidatePass {
 }
 
 @Controller('user')
-@UseGuards(AuthGuard('jwt'))
-@ApiBearerAuth()
 @ApiTags('用户')
+@ApiResponse({
+  status: 401,
+  description: '没有身份,请重新登陆',
+  type: AuthResponse,
+})
+@ApiBadGatewayResponse({
+  status: 500,
+  description: '请求失败',
+  type: ErrorResponse,
+})
 export class UserController {
   constructor(private userService: UserService) {}
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @Get('/')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiQuery({
     name: 'keyword',
     description: '搜素关键字',
@@ -58,6 +86,11 @@ export class UserController {
     enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     required: false,
     type: Number,
+  })
+  @ApiResponse({
+    status: 200,
+    description: '请求全部用户数据',
+    type: ResponseAllData,
   })
   async findAll(@Query() { keyword, count, pageSize }) {
     const data:
@@ -79,6 +112,13 @@ export class UserController {
   }
 
   @Get('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    status: 200,
+    description: '查询单独用户',
+    type: UserDto,
+  })
   @ApiParam({
     name: 'id',
     description: '输入用户ID值',
@@ -88,7 +128,23 @@ export class UserController {
   }
 
   @Post()
+  @ApiBody({
+    required: true,
+    type: UserDto,
+    description: '注册用户',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '注册成功',
+    type: UserSuccessResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: '该账户已经被注册',
+    type: UserErrorResponse,
+  })
   async create(@Body() user: UserDto): Promise<responseMsg<Users, UserDto>> {
+    console.log(user);
     const { password } = user;
     const bcryptPass = bcrypt
       .hashSync(password, bcrypt.genSaltSync(10))
@@ -99,9 +155,16 @@ export class UserController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     description: '输入用户ID值',
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '请求成功',
+    type: SuccessResponse,
   })
   async update(
     @Param('id') id: number,
@@ -117,9 +180,16 @@ export class UserController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     description: '输入用户ID值',
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '请求成功',
+    type: SuccessResponse,
   })
   async delete(@Param('id') id: number): Promise<responseMsg<Users, UserDto>> {
     const res = await this.userService.deleteOne(id);
@@ -128,9 +198,16 @@ export class UserController {
 
   // 校验旧密码
   @Post('volidateOldPass')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @ApiBody({
     description: '校验旧密码',
     type: volidatePass,
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '请求成功',
+    type: SuccessResponse,
   })
   async volidateOldPass(@Body() body: volidatePass) {
     let oldPass: any = body.pass;
@@ -151,9 +228,16 @@ export class UserController {
   }
   // 更改密码
   @Post('/updatePass')
+  // @UseGuards(AuthGuard('jwt'))
+  // @ApiBearerAuth()
   @ApiBody({
     description: '更改密码',
     type: volidatePass,
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '请求成功',
+    type: SuccessResponse,
   })
   async updatePass(@Body() body: volidatePass) {
     const { pass } = body;
@@ -162,13 +246,19 @@ export class UserController {
     await this.userService.updatePass(body.id, body.pass);
     return {
       success: '修改成功',
+      statusCode: 200,
     };
   }
 
-  @Get('/user/account/:account')
+  @Get('/account/:account')
   @ApiParam({
     name: 'account',
     description: '请输入账号',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '请求用户数据',
+    type: ResponseData,
   })
   async findAccount(@Param('account') account: string) {
     const user = await this.userService.findAccount(account);
