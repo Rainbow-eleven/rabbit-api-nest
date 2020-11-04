@@ -1,5 +1,5 @@
 import { Classify } from './../classify/classify.entity';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import {  ApiProperty } from '@nestjs/swagger';
 import { Brand } from '../brand/brand.entity';
 
 export class ModelDto {
@@ -13,13 +13,13 @@ export class ModelDto {
     description: '品牌ID',
     required: true,
   })
-  brandId: Brand;
+  brandId: number;
 
   @ApiProperty({
     description: '类型ID',
     required: true,
   })
-  classifyId: Classify;
+  classifyId: number;
 
   @ApiProperty({
     description: '当前行情价格',
@@ -42,7 +42,7 @@ export class ModelDto {
   @ApiProperty({
     description: '内容图片',
   })
-  contentImg: [];
+  contentImg: "";
 
   @ApiProperty({
     description: '描述',

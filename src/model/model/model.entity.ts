@@ -25,19 +25,10 @@ export class Model {
   @Column('varchar', { nullable: true })
   modelName: string;
 
-  @ManyToOne(
-    type => Brand,
-    brand => brand.model,
-  )
-  @JoinColumn()
-  brandId: Brand;
-
-  @ManyToOne(
-    type => Classify,
-    e => e.model,
-  )
-  @JoinColumn()
-  classifyId: Classify;
+  @Column('int', { comment: '分类Id', nullable: true, default: null })
+  classifyId: number;
+  @Column('int', { comment: '品牌Id', nullable: true, default: null })
+  brandId: number;
 
   @Column({ type: 'decimal', nullable: true })
   exchangePrice: number;
@@ -53,7 +44,7 @@ export class Model {
   faceImg: string;
 
   @Column({ type: 'varchar', nullable: true, default: null })
-  contentImg: [];
+  contentImg: '';
 
   @Column({
     type: 'varchar',

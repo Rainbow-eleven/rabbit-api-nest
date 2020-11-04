@@ -14,14 +14,6 @@ export class BrandService {
   async find(id?: number): Promise<responseMsg<Brand, BrandDto>> {
     if (id) {
       let res = await this.brandRepository.findOne({ where: { id } });
-      const classify = await this.brandRepository.query(`
-      SELECT
-        c.*
-      FROM
-        classify AS c
-      WHERe c.id = ${res.classifyId}
-      `);
-      res = { ...res, classifyId: classify };
       return {
         message: '查询成功',
         statusCode: 200,

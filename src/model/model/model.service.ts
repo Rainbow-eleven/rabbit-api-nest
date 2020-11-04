@@ -51,9 +51,35 @@ export class ModelService {
             .where({ modelName: Like(`%${s.keyword}%`) })
             .getRawMany(); // 获得原始结果
         } else {
-          return createQueryBuilder(Model)
-            .select(['*'])
-            .getRawMany(); // 获得原始结果
+          let model: Model[] = await this.model.query(`select * from model`);
+          for (var i = 0; i < model.length; i++) {
+            let brand = await this.model.query(
+              `SELECT
+                b.*
+              FROM
+                model AS m,
+                brand AS b
+              WHERE
+                b.id = m.brandId
+              AND m.brandId = ${model[i].brandId}`,
+            );
+            let classify = await this.model.query(`
+              SELECT
+                c.*
+              FROM
+                model AS m,
+                classify AS c
+              WHERE
+                c.id = m.classifyId
+              AND m.classifyId = ${model[i].classifyId}
+            `);
+            model[i] = {
+              ...model[i],
+              brandId: brand[0],
+              classifyId: classify[0],
+            };
+          }
+          return model;
         }
       }
     }
