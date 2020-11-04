@@ -16,7 +16,10 @@ export class ModelService {
     id?: number,
   ): Promise<Model[] | responseMsg<Model, ModelDto> | Model> {
     if (id) {
-      return await this.model.findOne({ where: { id } });
+      let model: Model = await this.model.query(
+        `select * from model where id = ${id}`,
+      )[0];
+      return model;
     } else {
       if (s.count === undefined && s.pageSize) {
         return {
@@ -31,25 +34,79 @@ export class ModelService {
       }
       if (s.count !== undefined && s.pageSize !== undefined) {
         if (s.keyword) {
-          return createQueryBuilder(Model)
-            .select(['*'])
-            .where({ modelName: Like(`%${s.keyword}%`) })
-            .offset((s.count - 1) * s.pageSize)
-            .limit(s.pageSize * 1)
-            .getRawMany(); // 获得原始结果
+          let model: Model[] = await this.model.query(
+            `select * from model where modelName LIKE "%${
+              s.keyword
+            }%" limit ${s.pageSize * 1} offset ${(s.count - 1) * s.pageSize}`,
+          );
+          for (var i = 0; i < model.length; i++) {
+            let brand = await this.model.query(
+              `SELECT
+                b.*
+              FROM
+                model AS m,
+                brand AS b
+              WHERE
+                b.id = m.brandId
+              AND m.brandId = ${model[i].brandId}`,
+            );
+            let classify = await this.model.query(`
+              SELECT
+                c.*
+              FROM
+                model AS m,
+                classify AS c
+              WHERE
+                c.id = m.classifyId
+              AND m.classifyId = ${model[i].classifyId}
+            `);
+            model[i] = {
+              ...model[i],
+              brandId: brand[0],
+              classifyId: classify[0],
+            };
+          }
+          return model;
         } else {
-          return createQueryBuilder(Model)
-            .select(['*'])
-            .offset((s.count - 1) * s.pageSize)
-            .limit(s.pageSize * 1)
-            .getRawMany(); // 获得原始结果
+          let model: Model[] = await this.model.query(
+            `select * from model limit ${s.pageSize * 1} offset ${(s.count -
+              1) *
+              s.pageSize}`,
+          );
+          for (var i = 0; i < model.length; i++) {
+            let brand = await this.model.query(
+              `SELECT
+                b.*
+              FROM
+                model AS m,
+                brand AS b
+              WHERE
+                b.id = m.brandId
+              AND m.brandId = ${model[i].brandId}`,
+            );
+            let classify = await this.model.query(`
+              SELECT
+                c.*
+              FROM
+                model AS m,
+                classify AS c
+              WHERE
+                c.id = m.classifyId
+              AND m.classifyId = ${model[i].classifyId}
+            `);
+            model[i] = {
+              ...model[i],
+              brandId: brand[0],
+              classifyId: classify[0],
+            };
+          }
+          return model;
         }
       } else {
         if (s.keyword) {
-          return createQueryBuilder(Model)
-            .select(['*'])
-            .where({ modelName: Like(`%${s.keyword}%`) })
-            .getRawMany(); // 获得原始结果
+          return await this.model.query(
+            `select * from model where modelName LIKE "%${s.keyword}%"`,
+          );
         } else {
           let model: Model[] = await this.model.query(`select * from model`);
           for (var i = 0; i < model.length; i++) {
@@ -86,16 +143,11 @@ export class ModelService {
   }
 
   async findOne(id: number) {
-    let classify = await this.model.query(
-      `select * from brand where id = ${id}`,
-    );
-    const data = await this.model.query(`select b.* from  brand as a ,model as b
-    where a.id = b.brandIdId  and b.brandIdId=${id}`);
-    classify = { ...classify[0], models: data };
+    let model = await this.model.query(`select * from model where id = ${id}`);
     return {
       message: '查询成功',
       statusCode: 200,
-      data: classify,
+      data: model[0],
     };
   }
 
