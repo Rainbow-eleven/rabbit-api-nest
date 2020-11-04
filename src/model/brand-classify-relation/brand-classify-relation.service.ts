@@ -51,7 +51,6 @@ export class BrandClassifyRelationService {
       // });
       let data = [];
       let count = await this.brandRepository.query(`select * from classify`);
-      console.log(count.length);
       for (var i = 1; i <= count.length; i++) {
         const brand = await this.brandRepository.query(
           `select a.* from  brand as a ,brand_classify_relation as b

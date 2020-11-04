@@ -13,18 +13,41 @@ export class BrandService {
   ) {}
   async find(id?: number): Promise<responseMsg<Brand, BrandDto>> {
     if (id) {
-      const res = await this.brandRepository.findOne({ where: { id } });
+      let res = await this.brandRepository.findOne({ where: { id } });
+      const classify = await this.brandRepository.query(`
+      SELECT
+        c.*
+      FROM
+        classify AS c
+      WHERe c.id = ${res.classifyId}
+      `);
+      res = { ...res, classifyId: classify };
       return {
         message: '查询成功',
         statusCode: 200,
         data: res,
       };
     } else {
-      const res = await this.brandRepository.find();
+      let brand: Brand[] = await this.brandRepository.query(
+        `select * from brand`,
+      );
+      for (var i = 0; i < brand.length; i++) {
+        let classify = await this.brandRepository.query(
+          `SELECT
+              c.*
+            FROM
+              brand AS b,
+              classify AS c
+            WHERE
+              c.id = b.classifyId
+            AND b.classifyId = ${brand[i].classifyId}`,
+        );
+        brand[i] = { ...brand[i], classifyId: classify[0] };
+      }
       return {
         message: '查询成功',
         statusCode: 200,
-        data: res,
+        data: brand,
       };
     }
   }

@@ -37,6 +37,9 @@ export class Brand {
   @Column('bigint', { comment: '修改人', nullable: true, default: null })
   updatedUserId: number;
 
+  @Column('int', { comment: '分类Id', nullable: true, default: null })
+  classifyId: number;
+
   @CreateDateColumn({
     type: 'timestamp',
     comment: '创建时间',

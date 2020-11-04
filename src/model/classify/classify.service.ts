@@ -52,7 +52,7 @@ export class ClassifyService {
   ): Promise<responseMsg<Classify, ClassifyDto>> {
     const { classifyName } = body;
     const isUsers = await this.classifyrRepository.query(`
-    Select * from classify where brandName = '${classifyName}'
+    Select * from classify where classifyName = '${classifyName}'
   `);
     if (isUsers[0]) {
       if (id == isUsers[0].id) {

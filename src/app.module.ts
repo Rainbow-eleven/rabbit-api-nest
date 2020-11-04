@@ -24,9 +24,9 @@ import { Malfunction_options } from './model/malo/malo.entity';
 import { ToolController } from './tool.controller';
 import { OSSModule } from '@nest-public/nest-oss';
 import { EvaluateModule } from './model/evaluate/evaluate.module';
-import { EvaluateDetailModule } from './model/evaluate-detail/evaluate-detail.module';
 import { EvaluateDetail } from './model/evaluate-detail/evaluate-detail.entity';
 import { AppointmentModule } from './model/appointment/appointment.module';
+import { ToolService } from './tool.service';
 
 const emailConfig = {
   useFactory: () => ({
@@ -59,6 +59,7 @@ const ossConfig = {
 };
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Model]),
     OSSModule.forRoot(ossConfig),
     MailerModule.forRootAsync(emailConfig),
     TypeOrmModule.forRoot({
@@ -79,7 +80,7 @@ const ossConfig = {
         Malfunction_options,
         Evaluate,
         EvaluateDetail,
-        Appointment
+        Appointment,
       ],
     }),
     LoginModule,
@@ -95,6 +96,6 @@ const ossConfig = {
     AppointmentModule,
   ],
   controllers: [ToolController],
-  providers: [JwtStrategy],
+  providers: [JwtStrategy, ToolService],
 })
 export class AppModule {}

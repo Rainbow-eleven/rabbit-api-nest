@@ -25,6 +25,12 @@ export class BrandDto {
   status?: number;
 
   @ApiProperty({
+    description: '分类ID',
+    example: 1,
+  })
+  classifyId: number;
+
+  @ApiProperty({
     description: '创建人',
     example: null,
   })

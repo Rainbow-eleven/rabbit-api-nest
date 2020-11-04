@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createQueryBuilder, Like, Repository } from 'typeorm';
 import { Model } from './model.entity';
 import { responseMsg } from 'src/service/interface';
-import { ApiParam } from '@nestjs/swagger';
 
 @Injectable()
 export class ModelService {

@@ -1,5 +1,7 @@
+import { ToolService } from './tool.service';
 import {
   Controller,
+  Get,
   Post,
   UploadedFiles,
   UseGuards,
@@ -22,7 +24,10 @@ class FileUploadDto {
 }
 @Controller()
 export class ToolController {
-  constructor(private readonly oSSService: OSSService) {}
+  constructor(
+    private readonly oSSService: OSSService,
+    private toolService: ToolService,
+  ) {}
 
   @Post('upload')
   @ApiTags('头像上传')
@@ -37,5 +42,11 @@ export class ToolController {
   public async uploadOSS(@UploadedFiles() file) {
     const result = await this.oSSService.upload(file);
     return result[0];
+  }
+
+  @Get('/total')
+  @ApiTags('数据总量')
+  findTotal() {
+    return this.toolService.findTotal();
   }
 }

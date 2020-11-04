@@ -51,6 +51,7 @@ class volidatePass {
   pass: string;
 }
 
+
 @Controller('user')
 @ApiTags('用户')
 @ApiResponse({
