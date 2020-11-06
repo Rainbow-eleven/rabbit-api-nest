@@ -11,7 +11,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiParam, ApiQuery, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiParam,
+  ApiQuery,
+  ApiBearerAuth,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthResponse, ErrorResponse } from 'src/service/interface';
 
@@ -33,32 +39,26 @@ export class MaloController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @ApiQuery({
-    description: '模型Id',
-    name: 'mid',
-    required: false,
-  })
-  @ApiQuery({
-    description: '故障Id',
-    name: 'maid',
-    required: false,
-  })
-  async findAll(@Query('mid') mid: number, @Query('mid') maid: number) {
-    return await this.maloService.find(mid, maid);
+  async findAll() {
+    return await this.maloService.find();
   }
 
-  // @Get('/:id')
-  // @ApiParam({
-  //   description: '请输入故障信息ID',
-  //   name: 'id',
-  // })
-  // async findOne(@Param('id') id: number) {
-  //   return await this.maloService.find(id);
-  // }
+  @Get('/:id')
+  @ApiParam({
+    description: '请输入故障信息ID',
+    name: 'id',
+  })
+  async findOne(@Param('id') id: number) {
+    return await this.maloService.find(id);
+  }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
+  @ApiParam({
+    description: '请输入故障信息ID',
+    name: 'id',
+  })
   async create(@Body() body: MaloDto) {
     return await this.maloService.create(body);
   }

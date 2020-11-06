@@ -1,17 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Users } from './../user/user.entity';
 export class AppointmentDto {
-  // @ApiProperty({
-  //   description: '预约编号',
-  //   example: null,
-  // })
-  // appointCode: number;
   @ApiProperty({
     description: '用户Id',
     example: 1,
     type: Users,
   })
-  userId: Users;
+  userId: number;
 
   @ApiProperty({
     description: '预约邮箱',

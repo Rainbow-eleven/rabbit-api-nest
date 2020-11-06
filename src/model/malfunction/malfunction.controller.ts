@@ -39,11 +39,22 @@ export class MalfunctionController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiParam({
-    description: '请输入商品ID',
+    description: '请输入故障ID',
     name: 'id',
   })
   async findOne(@Param('id') id: number) {
     return await this.malfunction.find(null, id);
+  }
+
+  @Get('/model/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiParam({
+    description: '请输入商品ID',
+    name: 'id',
+  })
+  async findModel(@Param('id') id: number) {
+    return await this.malfunction.findModel(id);
   }
 
   @Post()
@@ -57,7 +68,7 @@ export class MalfunctionController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiParam({
-    description: '请输入商品ID',
+    description: '请输入选项ID',
     name: 'id',
   })
   async update(@Param('id') id: number, @Body() body: MalfunctionDto) {

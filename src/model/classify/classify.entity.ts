@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BrandClassifyRelation } from '../brand-classify-relation/brand-classify-relation.entity';
 import { Model } from '../model/model.entity';
 @Entity()
 export class Classify {
@@ -51,12 +50,6 @@ export class Classify {
     comment: '修改时间',
   })
   updatedTime: Date;
-
-  @OneToMany(
-    type => BrandClassifyRelation,
-    bcr => bcr.classifyId,
-  )
-  BrandClassifyRelation: BrandClassifyRelation[];
 
   @OneToMany(
     type => Model,

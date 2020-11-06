@@ -8,22 +8,17 @@ export class EvaluateDetailDto {
     type: Number,
     example: 1,
   })
-  evaluateId: Evaluate;
+  evaluateId: number;
   @ApiProperty({
     description: '故障表主键Id',
     type: Number,
     example: 1,
   })
-  malfId: Malfunction;
+  malfId: number;
   @ApiProperty({
     description: '故障选项Id',
     type: Number,
     example: 1,
   })
-  optionId: Malfunction_options;
-  @ApiProperty({
-    description: '故障选项名称',
-    type: String,
-  })
-  optionName: string;
+  optionId: number;
 }

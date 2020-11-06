@@ -27,7 +27,7 @@ export class AppointmentService {
         appointment AS a,
         users AS u
       WHERE
-        a.userIdId = u.id
+        a.userId = u.id
       AND u.id = ${id}
       `);
       user = { ...user[0], appointments: data };
@@ -41,12 +41,13 @@ export class AppointmentService {
       SELECT
         u.id AS "userId",
         u.username,
+        u.faceUrl as "userImg",
         a.*
       FROM
         users AS u,
         appointment AS a
       WHERE
-        a.userIdId = u.id
+        a.userId = u.id
       `);
       return {
         message: '查询成功',

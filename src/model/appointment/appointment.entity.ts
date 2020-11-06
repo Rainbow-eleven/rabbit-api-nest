@@ -16,11 +16,8 @@ export class Appointment {
   @Generated('uuid')
   appointCode: number;
 
-  @ManyToOne(
-    type => Users,
-    user => user.Appointment,
-  )
-  userId: Users;
+  @Column('int', { comment: '用户Id', nullable: true, default: null })
+  userId: number;
 
   @Column({
     type: 'varchar',

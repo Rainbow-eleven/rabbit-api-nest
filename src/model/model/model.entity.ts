@@ -74,11 +74,6 @@ export class Model {
   })
   updatedTime: Date;
 
-  @OneToMany(
-    type => Malfunction,
-    e => e.modelId,
-  )
-  malfunction: Model;
 
   @OneToMany(
     type => Malfunction_options,

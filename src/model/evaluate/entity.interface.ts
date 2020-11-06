@@ -8,7 +8,7 @@ export class EvaluateDto {
     type: Number,
     example: 1,
   })
-  modelId: Model;
+  modelId: number;
 
   @ApiProperty({
     description: '订金金额',

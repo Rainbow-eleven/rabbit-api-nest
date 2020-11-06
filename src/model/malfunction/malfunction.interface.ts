@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Model } from '../model/model.entity';
 
 export class MalfunctionDto {
   @ApiProperty({
     description: '商品模型ID',
     type: Number,
   })
-  modelId: Model;
+  modelId: number;
   @ApiProperty({
     description: '故障名称',
     type: String,

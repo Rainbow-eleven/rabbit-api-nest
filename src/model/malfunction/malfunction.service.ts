@@ -15,35 +15,74 @@ export class MalfunctionService {
     id?: number,
   ): Promise<responseMsg<Malfunction, MalfunctionDto>> {
     if (!id) {
-      const data = await this.malfunction
-        .query(`SELECT m.*, a.id AS 'modelId', a.modelName, a.faceImg FROM model AS a,
-    malfunction AS m WHERE a.id = m.modelIdId `);
+      const data: Malfunction[] = await this.malfunction.query(
+        `select * from malfunction`,
+      );
+      for (var i = 0; i < data.length; i++) {
+        let model = await this.malfunction.query(
+          `SELECT
+            m.id,
+            m.modelName,
+            M.faceImg,
+            M.exchangePrice,
+            M.topPrice,
+            M.description,
+            M.contentImg
+          FROM
+            model AS m,
+            malfunction AS ma
+          WHERE
+            m.id = ma.modelId
+          AND
+            ma.modelId = ${data[i].modelId}`,
+        );
+        data[i] = { ...data[i], modelId: model[0] };
+      }
       return {
         message: '查询成功',
         statusCode: 200,
         data,
       };
     } else {
-      let model = await this.malfunction.query(
-        `select * from model where id = ${id}`,
+      const data = await this.malfunction.query(
+        `
+          select * from malfunction where id = ${id}
+        `,
       );
-      const data = await this.malfunction
-        .query(`SELECT m.* FROM model AS a, malfunction AS m
-        WHERE a.id = m.modelIdId and m.modelIdId = ${id}`);
-      model = { ...model[0], malfunctions: data };
       return {
         message: '查询成功',
         statusCode: 200,
-        data: model,
+        data: data[0],
       };
     }
   }
-
+  async findModel(id: number) {
+    let model = await this.malfunction.query(
+      `select * from model where id = ${id}`,
+    );
+    const data = await this.malfunction.query(`
+      SELECT
+        ma.*
+      FROM
+        model AS m,
+        malfunction AS ma
+      WHERE
+        m.id = ma.modelId
+      AND
+        ma.modelId = ${id}
+      `);
+    model = { ...model[0], malfunctions: data };
+    return {
+      message: '查询成功',
+      statusCode: 200,
+      data: model,
+    };
+  }
   async create(
     body: MalfunctionDto,
   ): Promise<responseMsg<Malfunction, MalfunctionDto>> {
     const malFucntion = await this.malfunction.query(
-      `select * from malfunction where title = '${body.title}' and modelIdId = ${body.modelId}`,
+      `select * from malfunction where title = '${body.title}' and modelId = ${body.modelId}`,
     );
     if (!malFucntion[0]) {
       const MalfunctionRepository = await this.malfunction.create(body);

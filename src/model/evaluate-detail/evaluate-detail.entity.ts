@@ -10,27 +10,12 @@ export class EvaluateDetail {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(
-    type => Evaluate,
-    e => e.EvaluateDetail,
-  )
-  evaluateId: Evaluate;
+  @Column('int', { comment: '评估Id', nullable: true, default: null })
+  evaluateId: number;
 
-  @ManyToOne(
-    type => Malfunction,
-    e => e.EvaluateDetail,
-  )
-  malfId: Malfunction;
+  @Column('int', { comment: '故障Id', nullable: true, default: null })
+  malfId: number;
 
-  @ManyToOne(
-    type => Malfunction_options,
-    e => e.EvaluateDetail,
-  )
-  optionId: Malfunction_options;
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  optionName: string;
+  @Column('int', { comment: '故障选项Id', nullable: true, default: null })
+  optionId: number;
 }

@@ -10,8 +10,6 @@ import { UserModule } from './model/user/user.module';
 import { ClassifyModule } from './model/classify/classify.module';
 import { BrandModule } from './model/brand/brand.module';
 import { Brand } from './model/brand/brand.entity';
-import { BrandClassifyRelationModule } from './model/brand-classify-relation/brand-classify-relation.module';
-import { BrandClassifyRelation } from './model/brand-classify-relation/brand-classify-relation.entity';
 import { LoginModule } from './model/login/login.module';
 import { EmailModule } from './model/email/email.module';
 import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
@@ -27,6 +25,7 @@ import { EvaluateModule } from './model/evaluate/evaluate.module';
 import { EvaluateDetail } from './model/evaluate-detail/evaluate-detail.entity';
 import { AppointmentModule } from './model/appointment/appointment.module';
 import { ToolService } from './tool.service';
+import { EvaluateDetailModule } from './model/evaluate-detail/evaluate-detail.module';
 
 const emailConfig = {
   useFactory: () => ({
@@ -74,12 +73,11 @@ const ossConfig = {
         Users,
         Classify,
         Brand,
-        BrandClassifyRelation,
         Model,
         Malfunction,
         Malfunction_options,
         Evaluate,
-        EvaluateDetail,
+        // EvaluateDetail,
         Appointment,
       ],
     }),
@@ -88,11 +86,11 @@ const ossConfig = {
     UserModule,
     ClassifyModule,
     BrandModule,
-    BrandClassifyRelationModule,
     ModelModule,
     MalfunctionModule,
     MaloModule,
     EvaluateModule,
+    // EvaluateDetailModule,
     AppointmentModule,
   ],
   controllers: [ToolController],

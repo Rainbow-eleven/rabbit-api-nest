@@ -14,17 +14,8 @@ export class Evaluate {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(
-    type => Model,
-    model => model.evaluate,
-  )
-  modelId: Model;
-
-  @OneToOne(
-    type => EvaluateDetail,
-    e => e.evaluateId,
-  )
-  EvaluateDetail: EvaluateDetail;
+  @Column('int', { comment: '模型Id', nullable: true, default: null })
+  modelId: number;
 
   @Column({ type: 'decimal', nullable: true, default: 500 })
   subscription: number;

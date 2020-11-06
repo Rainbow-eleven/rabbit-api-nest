@@ -37,7 +37,7 @@ export class EvaluateController {
 
   @Get('/:id')
   @ApiParam({
-    description: '请输入商品模型ID',
+    description: '请输入评估信息ID',
     name: 'id',
   })
   findOne(@Param('id') id: number) {

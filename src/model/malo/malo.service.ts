@@ -11,62 +11,55 @@ export class MaloService {
     @InjectRepository(Malfunction_options)
     private malo: Repository<Malfunction_options>,
   ) {}
-  async find(
-    mid?: number,
-    maid?: number,
-  ): Promise<responseMsg<Malfunction_options, MaloDto>> {
-    if (mid && maid) {
-      let model = await this.malo.query(
-        `select * from model where id = ${mid}`,
-      );
-      const maData = await this.malo.query(`
-      select * from malfunction where id = ${maid}
-    `);
-      const moData = await this.malo.query(`
-      SELECT
-        mao.*
-      FROM
-        malfunction_options AS mao,
-        malfunction AS ma,
-        model AS model
-      WHERE
-        model.id = mao.modelIdId
-      AND ma.id = mao.malfIdId
-      AND mao.modelIdId = ${mid}
-      AND mao.malfIdId = ${maid}
-    `);
-      model = {
-        ...model[0],
-        malfunctions: {
-          ...maData[0],
-          specification: [],
-          malfunction_options: moData,
-        },
-      };
+  async find(id?: number): Promise<responseMsg<Malfunction_options, MaloDto>> {
+    if (!id) {
+      let malos = await this.malo.query(`select * from malfunction_options`);
+      for (let i = 0; i < malos.length; i++) {
+        let model = await this.malo.query(
+          `SELECT
+          m.id,
+          m.modelName,
+          M.faceImg,
+          M.exchangePrice,
+          M.topPrice,
+          M.description,
+          M.contentImg
+        FROM
+          model AS m,
+          malfunction_options AS malo
+        WHERE
+          m.id = malo.modelId
+        AND
+        malo.modelId = ${malos[i].modelId}`,
+        );
+        malos[i] = { ...malos[i], modelId: model[0] };
+      }
+      for (let i = 0; i < malos.length; i++) {
+        let malfunction = await this.malo.query(
+          `SELECT
+          ma.*
+        FROM
+          malfunction AS ma,
+          malfunction_options AS malo
+        WHERE
+          ma.id = malo.malfunctionId
+        AND malo.malfunctionId = ${malos[i].malfunctionId}`,
+        );
+        malos[i] = { ...malos[i], malfunctionId: malfunction[0] };
+      }
       return {
         message: '查询成功',
         statusCode: 200,
-        data: model,
+        data: malos,
       };
     } else {
-      let model = await this.malo.query(
-        `select * from model where id = ${mid}`,
+      const malo = await this.malo.query(
+        `select * from malfunction_options where id  = ${id}`,
       );
-      const moData = await this.malo.query(`
-      SELECT
-        ma.*
-      FROM
-        malfunction AS ma,
-        model AS mo
-      WHERE
-        mo.id = ma.modelIdId
-      AND mo.id = ${mid}
-      `);
-      model = { ...model[0], malfunctions: moData };
       return {
         message: '查询成功',
         statusCode: 200,
-        data: model,
+        data: malo[0],
       };
     }
   }

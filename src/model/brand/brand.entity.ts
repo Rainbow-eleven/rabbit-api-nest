@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BrandClassifyRelation } from '../brand-classify-relation/brand-classify-relation.entity';
 import { Model } from '../model/model.entity';
 @Entity()
 export class Brand {
@@ -52,14 +51,6 @@ export class Brand {
   })
   updatedTime: Date;
 
-  @OneToOne(
-    type => BrandClassifyRelation,
-    bcr => bcr.brandId,
-    {
-      cascade: true,
-    },
-  )
-  BrandClassifyRelation: BrandClassifyRelation;
 
   @OneToMany(
     type => Model,

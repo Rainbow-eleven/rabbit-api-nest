@@ -145,7 +145,6 @@ export class UserController {
     type: UserErrorResponse,
   })
   async create(@Body() user: UserDto): Promise<responseMsg<Users, UserDto>> {
-    console.log(user);
     const { password } = user;
     const bcryptPass = bcrypt
       .hashSync(password, bcrypt.genSaltSync(10))

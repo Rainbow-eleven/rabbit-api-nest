@@ -16,19 +16,11 @@ export class Malfunction_options {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(
-    type => Model,
-    model => model.malfunction_option,
-  )
-  @JoinColumn()
-  modelId: Model;
+  @Column('int', { comment: '模型Id', nullable: true, default: null })
+  modelId: number;
 
-  @ManyToOne(
-    type => Malfunction,
-    malf => malf.malfunction_option,
-  )
-  @JoinColumn()
-  malfId: Malfunction;
+  @Column('int', { comment: '故障Id', nullable: true, default: null })
+  malfunctionId: number;
 
   @Column({
     type: 'varchar',
@@ -36,33 +28,9 @@ export class Malfunction_options {
   })
   optionName: string;
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  optionContent: string;
-
-  @Column({ type: 'int', nullable: true, default: 0 })
-  isHint: number;
-
-  @Column({ type: 'varchar', nullable: true, default: '' })
-  hintTitle: string;
-
-  @Column({ type: 'varchar', nullable: true, default: '' })
-  hintInfo: string;
-
-  @Column({ type: 'varchar', nullable: true, default: '' })
-  hintImg: string;
-
   @Column({ type: 'int', nullable: true, default: 1 })
   processType: number;
 
   @Column({ type: 'int', nullable: true, default: 0 })
   ratio: number;
-
-  @OneToMany(
-    type => EvaluateDetail,
-    e => e.optionId,
-  )
-  EvaluateDetail: EvaluateDetail;
 }
